@@ -21,14 +21,14 @@
   -->
 
 <resources>
-    <string name="app_name">VerificaC19</string>
+    <string name="app_name">Green Pass App</string>
 
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
-    <string name="scan_green_pass">VerificaC19</string>
+    <string name="scan_green_pass">Green Pass App</string>
     <string name="controlCertificate">Verifica una certificazione</string>
     <string name="welcome">Benvenuto</string>
-    <string name="systemDescription">Con la scansione dei QR Code è possibile verificare la validità e l\'autenticità della Certificazione verde COVID-19. VerificaC19 permette anche il controllo dell\'EU Digital Covid Certificate emesso da altri paesi europei.</string>
+    <string name="systemDescription">Con la scansione dei QR Code è possibile verificare la validità e l\'autenticità della Certificazione verde COVID-19. Green Pass App permette anche il controllo dell\'EU Digital Covid Certificate emesso da altri paesi europei.</string>
     <string name="privacyPolicy"><u>Privacy policy</u></string>
     <string name="codiceFiscale">Codice fiscale</string>
     <string name="expirationText">Data scadenza certificato</string>
@@ -41,7 +41,6 @@
     <string name="subtitle_text_expired">La Certificazione è scaduta.</string>
     <string name="subtitle_text_future">La Certificazione non è ancora valida.</string>
     <string name="subtitle_text_technicalError">La Certificazione non è valida o non è stato possibile verificarla.</string>
-    <string name="validation_datetime_text">Ora e data di validazione: %1$s</string>
     <string name="scanQrCertificate">Scansiona il QR Code. </string>
     <string name="scanQr">Avvia scansione </string>
     <string name="nextQR">Prossima scansione</string>
@@ -60,6 +59,10 @@
     <string name="back">Indietro</string>
     <string name="version">v. %1$s</string>
     <string name="privacyTitle"></string>
-    <string name="privacy">VerificaC19 è l\'app ufficiale del Ministero della Salute per la verifica di validità e autenticità delle Certificazioni Verdi Covid19. La verifica avviene scansionando il QRcode presente sulla certificazione tramite la fotocamera del dispositivo. Nessun dato letto dalla Certificazione viene memorizzato sul dispositivo con cui si effettua la verifica.
+    <string name="privacy">Green Pass App è una estensione dell\'app ufficiale del Ministero della Salute per la verifica di validità e autenticità delle Certificazioni Verdi Covid19. La verifica avviene scansionando il QRcode presente sulla certificazione tramite la fotocamera del dispositivo. Nessun dato letto dalla Certificazione viene memorizzato sul dispositivo con cui si effettua la verifica.
 \n\nPer utilizzare l\'App è necessario fornire il consenso all\'uso della fotocamera.</string>
+
+    <string name="homeMessage">Con Green Pass App puoi aggiungere tutti i green pass che vuoi per portarli sempre con te.\nPer iniziare è semplice, basta inquadrare il QRCode.\nInfine puoi verificare se i tuoi Green Pass o quelli degli altri sono autentici\n\nPer iniziare premi il bottone rotondo in basso a destra</string>
+    <string name="back_to_home">Torna alla home</string>
+
 </resources>

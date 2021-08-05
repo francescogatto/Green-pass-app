@@ -47,7 +47,8 @@ data class VaccinationModel(
     val dateOfVaccination: String,
     val countryOfVaccination: String,
     val certificateIssuer: String,
-    val certificateIdentifier: String
+    val certificateIdentifier: String,
+    override var expireDate: String,
 ) : CertificateData
 
 data class TestModel(
@@ -62,7 +63,8 @@ data class TestModel(
     val countryOfVaccination: String,
     val certificateIssuer: String,
     val certificateIdentifier: String,
-    val resultType: TestResult
+    val resultType: TestResult,
+    override var expireDate: String,
 ) : CertificateData
 
 enum class TestResult(val value: String) {
@@ -77,9 +79,11 @@ data class RecoveryModel(
     val certificateIssuer: String,
     val certificateValidFrom: String,
     val certificateValidUntil: String,
-    val certificateIdentifier: String
+    val certificateIdentifier: String,
+    override var expireDate: String,
 ) : CertificateData
 
 interface CertificateData {
     val disease: String
+    val expireDate: String
 }

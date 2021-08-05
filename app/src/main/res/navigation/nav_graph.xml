@@ -24,19 +24,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/codeReaderFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/codeReaderFragment"
         android:name="it.ministerodellasalute.verificaC19.ui.main.codeReader.CodeReaderFragment"
         android:label="CodeReader"
         tools:layout="@layout/fragment_code_reader">
-
+        <argument android:defaultValue="false"
+            android:name="saveGreenPass"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_codeReaderFragment_to_verificationFragment"
             app:destination="@id/verificationFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left" />
+        <action
+            app:launchSingleTop="true"
+            app:popUpTo="@id/homeFragment"
+            android:id="@+id/action_codeReaderFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
 
     </fragment>
 
@@ -49,7 +56,59 @@
         <argument
             android:name="qrCodeText"
             app:argType="string" />
+        <argument android:defaultValue="false"
+            android:name="saveGreenPass"
+            app:argType="boolean" />
+        <action
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:popUpTo="@+id/homeFragment"
+            android:id="@+id/action_verificationFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_verificationFragment_to_fullScreenQrCode"
+            app:destination="@id/fullScreenQrCode" />
 
+    </fragment>
+    <fragment
+        tools:layout="@layout/f_home"
+        android:id="@+id/homeFragment"
+        android:name="it.ministerodellasalute.verificaC19.ui.custom.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_verificaC19Fragment"
+            app:destination="@id/verificaC19Fragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_codeReaderFragment"
+            app:destination="@id/codeReaderFragment" >
+            <argument android:defaultValue="false"
+                android:name="saveGreenPass"
+                app:argType="boolean" />
+        </action>
+        <action
+            android:id="@+id/action_homeFragment_to_verificationFragment"
+            app:destination="@id/verificationFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_fullScreenQrCode"
+            app:destination="@id/fullScreenQrCode" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/activity_first"
+        android:id="@+id/verificaC19Fragment"
+        android:name="it.ministerodellasalute.verificaC19.ui.custom.VerificaC19Fragment"
+        android:label="VerificaC19Fragment" >
+        <action
+            android:id="@+id/action_verificaC19Fragment_to_codeReaderFragment"
+            app:destination="@id/codeReaderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullScreenQrCode"
+        android:name="it.ministerodellasalute.verificaC19.ui.custom.FullScreenQrCode"
+        android:label="FullScreenQrCode" >
+
+        <argument
+            android:name="qrCodeText"
+            app:argType="string" />
     </fragment>
 
 </navigation>

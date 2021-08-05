@@ -198,4 +198,15 @@ class VerificationViewModel @Inject constructor(
             ""
         }
     }
+
+    fun persistGreenPass(text: String){
+        val tmpList =  mutableListOf(text)
+        tmpList.addAll(preferences.listOfGreenPass)
+        preferences.listOfGreenPass = tmpList
+    }
+
+    fun getGreenPass(): List<String> {
+       return preferences.listOfGreenPass
+    }
+
 }

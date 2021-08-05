@@ -9,8 +9,8 @@ plugins {
 }
 
 tasks.whenTaskAdded { task ->
-    if (task.name == 'assembleDebug')
-        task.dependsOn codeCoverageDebugReport
+   // if (task.name == 'assembleDebug')
+   //     task.dependsOn codeCoverageDebugReport
 }
 
 tasks.whenTaskAdded { task ->
@@ -89,19 +89,19 @@ android {
     compileSdkVersion Config.compileSdk
 
     defaultConfig {
-        applicationId "it.ministerodellasalute.verificaC19"
+        applicationId "net.francescogatto.greenpassapp"
         minSdkVersion Config.minSdk
         targetSdkVersion Config.targetSdk
-        versionCode 12
-        versionName "0.0.0"
+        versionCode 16
+        versionName "1.0"
         testInstrumentationRunner Config.androidTestInstrumentation
     }
 
     buildTypes {
         debug {
-            buildConfigField "String", "BASE_URL", "\"https://testaka4.sogei.it/v1/dgc/\""
-            buildConfigField "String", "SERVER_HOST", "\"testaka4.sogei.it\""
-            buildConfigField "String", "CERTIFICATE_SHA", "\"sha256/R0d+cI8vTcJ3sCbpfQCH0OmdBbulPH3deYhngzOqJVA=\""
+            buildConfigField "String", "BASE_URL", "\"https://get.dgc.gov.it/v1/dgc/\""
+            buildConfigField "String", "SERVER_HOST", "\"get.dgc.gov.it\""
+            buildConfigField "String", "CERTIFICATE_SHA", "\"sha256/7cZJIDPacG8FS3pq6Mvxg+7yBDM/VYc2alOcbVe/e74=\""
         }
 
         release {
@@ -160,9 +160,9 @@ dependencies {
     implementation Deps.guava_conflict_resolver
 
     implementation Deps.hilt
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     kapt Deps.hilt_compiler
     implementation Deps.hilt_viewmodel
     implementation Deps.hilt_work
@@ -170,8 +170,14 @@ dependencies {
     kapt Deps.androidx_room_compiler
 
     implementation Deps.retrofit2
-    implementation Deps.log_interceptor
     implementation Deps.gson_converter
+    implementation 'com.nambimobile.widgets:expandable-fab:1.1.1'
+
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.1"))
+
+    // define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
 
     testImplementation Deps.test_junit
     testImplementation "io.mockk:mockk:1.11.0"

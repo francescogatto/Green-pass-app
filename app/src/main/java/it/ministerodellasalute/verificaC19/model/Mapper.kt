@@ -46,7 +46,8 @@ fun RecoveryStatement.toRecoveryModel(): RecoveryModel {
         certificateIssuer,
         certificateValidFrom,
         certificateValidUntil,
-        certificateIdentifier
+        certificateIdentifier,
+        ""
     )
 }
 
@@ -63,7 +64,8 @@ fun Test.toTestModel(): TestModel {
         countryOfVaccination,
         certificateIssuer,
         certificateIdentifier,
-        getTestResultType().toTestResult()
+        getTestResultType().toTestResult(),
+        ""
     )
 }
 
@@ -85,7 +87,8 @@ fun Vaccination.toVaccinationModel(): VaccinationModel {
         dateOfVaccination,
         countryOfVaccination,
         certificateIssuer,
-        certificateIdentifier
+        certificateIdentifier,
+        ""
     )
 }
 

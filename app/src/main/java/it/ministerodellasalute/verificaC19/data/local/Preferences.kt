@@ -38,6 +38,8 @@ interface Preferences {
     var validationRulesJson: String?
 
     fun clear()
+
+    var listOfGreenPass: List<String>
 }
 
 /**
@@ -55,6 +57,9 @@ class PreferencesImpl(context: Context) : Preferences {
 
     override var validationRulesJson by StringPreference(preferences, KEY_VALIDATION_RULES, "")
 
+    override var listOfGreenPass: List<String> by ListStringPreference(preferences, KEY_LIST_GREEN_PASS, emptySet())
+
+
     override fun clear() {
         preferences.value.edit().clear().apply()
     }
@@ -64,6 +69,8 @@ class PreferencesImpl(context: Context) : Preferences {
         private const val KEY_RESUME_TOKEN = "resume_token"
         private const val KEY_DATE_LAST_FETCH = "date_last_fetch"
         private const val KEY_VALIDATION_RULES = "validation_rules"
+        private const val KEY_LIST_GREEN_PASS = "KEY_LIST_GREEN_PASS"
+
     }
 }
 
@@ -80,6 +87,22 @@ class StringPreference(
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: String?) {
         preferences.value.edit { putString(name, value) }
+    }
+}
+
+class ListStringPreference(
+    private val preferences: Lazy<SharedPreferences>,
+    private val name: String,
+    private val defaultValue: Set<String>
+) : ReadWriteProperty<Any, List<String>> {
+
+    @WorkerThread
+    override fun getValue(thisRef: Any, property: KProperty<*>): List<String> {
+        return preferences.value.getStringSet(name, defaultValue)?.toList() ?: emptyList()
+    }
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: List<String>) {
+        preferences.value.edit { putStringSet(name, value.toSet()) }
     }
 }
 

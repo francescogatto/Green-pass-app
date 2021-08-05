@@ -143,4 +143,8 @@
     <dimen name="size_300dp">300dp</dimen>
     <dimen name="size_500dp">500dp</dimen>
 
+    <dimen name="viewpager_next_item_visible">10dp</dimen>
+    <dimen name="viewpager_current_item_horizontal_margin">32dp</dimen>
+    <dimen name="viewpager_current_item_horizontal_margin_bis">22dp</dimen>
+
 </resources>

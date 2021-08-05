@@ -22,6 +22,11 @@
 
 package it.ministerodellasalute.verificaC19.util
 
+import android.app.Activity
+import android.content.Intent
+import androidx.core.content.FileProvider
+import java.io.File
+
 object Utility {
     fun versionCompare(v1: String, v2: String): Int {
         // vnum stores each numeric part of version

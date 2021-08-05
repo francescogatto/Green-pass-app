@@ -25,15 +25,21 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
+import it.ministerodellasalute.verificaC19.BuildConfig
 import it.ministerodellasalute.verificaC19.R
+import it.ministerodellasalute.verificaC19.ui.custom.HomeViewModel
+import it.ministerodellasalute.verificaC19.ui.main.verification.VerificationViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private val viewModel: HomeViewModel by viewModels()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         setContentView(R.layout.activity_main)
     }
 }

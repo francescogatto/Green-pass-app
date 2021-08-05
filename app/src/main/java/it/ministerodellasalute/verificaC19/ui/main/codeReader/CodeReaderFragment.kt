@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.ResultPoint
 import com.google.zxing.client.android.BeepManager
@@ -38,12 +39,14 @@ import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DefaultDecoderFactory
 import it.ministerodellasalute.verificaC19.R
 import it.ministerodellasalute.verificaC19.databinding.FragmentCodeReaderBinding
+import it.ministerodellasalute.verificaC19.ui.main.verification.VerificationFragmentArgs
 import java.lang.Exception
 
 class CodeReaderFragment : Fragment(), NavController.OnDestinationChangedListener, View.OnClickListener {
 
     private var _binding: FragmentCodeReaderBinding? = null
     private val binding get() = _binding!!
+    private val args by navArgs<CodeReaderFragmentArgs>()
 
     private lateinit var beepManager: BeepManager
     private var lastText: String? = null
@@ -70,7 +73,7 @@ class CodeReaderFragment : Fragment(), NavController.OnDestinationChangedListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback { requireActivity().finish() }
+
     }
 
     override fun onCreateView(
@@ -112,11 +115,7 @@ class CodeReaderFragment : Fragment(), NavController.OnDestinationChangedListene
     }
 
     private fun navigateToVerificationPage(text: String) {
-        findNavController().currentDestination
-
-        val action = CodeReaderFragmentDirections.actionCodeReaderFragmentToVerificationFragment(
-                text
-            )
+        val action = CodeReaderFragmentDirections.actionCodeReaderFragmentToVerificationFragment(text, args.saveGreenPass)
         findNavController().navigate(action)
     }
 
@@ -129,7 +128,7 @@ class CodeReaderFragment : Fragment(), NavController.OnDestinationChangedListene
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.stop_button -> requireActivity().finish()
+            R.id.stop_button -> findNavController().navigate(CodeReaderFragmentDirections.actionCodeReaderFragmentToHomeFragment())
         }
     }
 }

@@ -27,22 +27,24 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import it.ministerodellasalute.verificaC19.BuildConfig
 import it.ministerodellasalute.verificaC19.databinding.ActivitySplashBinding
+import it.ministerodellasalute.verificaC19.ui.main.MainActivity
 
 
 class SplashScreenActivity : AppCompatActivity() {
-
 
     private lateinit var binding: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(!BuildConfig.DEBUG)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Handler().postDelayed({
-            val intent = Intent(this, FirstActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }, 1000)
