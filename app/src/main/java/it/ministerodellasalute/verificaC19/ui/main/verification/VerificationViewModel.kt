@@ -42,12 +42,10 @@ import dgca.verifier.app.decoder.model.GreenCertificate
 import dgca.verifier.app.decoder.model.VerificationResult
 import dgca.verifier.app.decoder.prefixvalidation.PrefixValidationService
 import dgca.verifier.app.decoder.schema.SchemaValidator
-import dgca.verifier.app.decoder.toBase64
 import it.ministerodellasalute.verificaC19.data.local.Preferences
 import it.ministerodellasalute.verificaC19.data.remote.model.Rule
 import it.ministerodellasalute.verificaC19.di.DispatcherProvider
 import it.ministerodellasalute.verificaC19.model.ValidationRulesEnum
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -77,12 +75,12 @@ class VerificationViewModel @Inject constructor(
     private val _inProgress = MutableLiveData<Boolean>()
     val inProgress: LiveData<Boolean> = _inProgress
 
-    fun init(qrCodeText: String) {
-        decode(qrCodeText)
+    fun init(qrCodeText: String, validate: Boolean) {
+        decode(qrCodeText, true)
     }
 
     @SuppressLint("SetTextI18n")
-    fun decode(code: String) {
+    fun decode(code: String, validate: Boolean) {
         viewModelScope.launch {
             _inProgress.value = true
             var greenCertificate: GreenCertificate? = null
@@ -125,7 +123,7 @@ class VerificationViewModel @Inject constructor(
 
             _inProgress.value = false
             _certificate.value = greenCertificate?.toCertificateModel()
-            _verificationResult.value = verificationResult
+                _verificationResult.value = verificationResult
         }
     }
 

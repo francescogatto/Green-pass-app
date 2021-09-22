@@ -30,28 +30,39 @@ import android.os.Build
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DimenRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.*
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.google.zxing.*
+import com.github.javiersantos.appupdater.AppUpdater
+import com.github.javiersantos.appupdater.enums.Display
+import com.github.javiersantos.appupdater.enums.Duration
+import com.github.javiersantos.appupdater.enums.UpdateFrom
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.play.core.review.ReviewInfo
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.zxing.BinaryBitmap
+import com.google.zxing.MultiFormatReader
+import com.google.zxing.RGBLuminanceSource
 import com.google.zxing.common.HybridBinarizer
 import dagger.hilt.android.AndroidEntryPoint
 import it.ministerodellasalute.verificaC19.R
 import it.ministerodellasalute.verificaC19.databinding.FHomeBinding
+import it.ministerodellasalute.verificaC19.ui.custom.SpidWebView.Companion.TAG
 import it.ministerodellasalute.verificaC19.ui.main.verification.VerificationFragment
 import it.ministerodellasalute.verificaC19.ui.main.verification.VerificationViewModel
 import java.io.File
@@ -67,7 +78,6 @@ class HomeFragment : BaseFragment() {
     private val homeViewModel: HomeViewModel by activityViewModels()
 
 
-
     private val selectImageFromGalleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
             val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -75,8 +85,12 @@ class HomeFragment : BaseFragment() {
             } else {
                 MediaStore.Images.Media.getBitmap(requireContext().contentResolver, it)
             }
-            val text = scanQRImage(bitmap.copy(Bitmap.Config.RGBA_F16, true))
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToVerificationFragment(text!!, true))
+            val text = scanQRImage(bitmap.copy(Bitmap.Config.ARGB_8888, true))
+            if (text == null) {
+                Toast.makeText(requireContext(), "C'è stato un problema con la lettura del qrcode", Toast.LENGTH_LONG).show()
+            } else {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToVerificationFragment(text!!, true))
+            }
 
         }
     }
@@ -84,10 +98,14 @@ class HomeFragment : BaseFragment() {
     private val selectPdfFromGalleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
             val bytes = requireActivity().contentResolver.openInputStream(it)?.readBytes()
-            val file = File.createTempFile("green_pass","tmp")
+            val file = File.createTempFile("green_pass", "tmp")
             file.writeBytes(bytes!!)
             val text = getImagesFromPDF(file, File(requireContext().cacheDir.path + "/Pdf"))
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToVerificationFragment(text!!, true))
+            if (text.isEmpty()) {
+                Toast.makeText(requireContext(), "C'è stato un problema con la lettura del qrcode", Toast.LENGTH_LONG).show()
+            } else {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToVerificationFragment(text, true))
+            }
             file.delete()
         }
     }
@@ -99,6 +117,11 @@ class HomeFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FHomeBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        startReviewManager()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -115,8 +138,18 @@ class HomeFragment : BaseFragment() {
         binding.fabAddGreenPassPdf.setOnClickListener {
             selectPdfFromGallery()
         }
+        binding.fabInfo.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAboutMeFragment())
+        }
+        binding.fabAddGreenPassSpid.setOnClickListener {
+            SpidWebView.newInstance().show(parentFragmentManager, "")
+        }
+        binding.privacyPolicy.setOnClickListener {
 
+        }
+        showReviewWindow()
         updateUI()
+        setUpdatePlugin()
 
         binding.viewPager.apply {
             // You need to retain one page on each side so that the next and previous items are visible
@@ -143,23 +176,41 @@ class HomeFragment : BaseFragment() {
             )
             addItemDecoration(itemDecoration)
         }
-        homeViewModel.refreshHome.observe(viewLifecycleOwner){
+        homeViewModel.refreshHome.observe(viewLifecycleOwner) {
             updateUI()
+        }
+
+
+        setFragmentResultListener("requestKey") { requestKey, bundle ->
+            val result = bundle.getString("url")?.replace("data:image/png;base64,", "")
+            val decodedString = Base64.decode(result, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+            val text = scanQRImage(bitmap.copy(Bitmap.Config.ARGB_8888, true))
+            if (text.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "C'è stato un problema con la lettura del qrcode", Toast.LENGTH_LONG).show()
+            } else {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToVerificationFragment(text, true))
+            }
+        }
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            Log.d(TAG, task.result)
         }
     }
 
+
     fun updateUI() {
-        if(viewModel.getGreenPass().isNotEmpty()) {
+        if (viewModel.getGreenPass().isNotEmpty()) {
             binding.coordinator.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.blue_dark))
             val pagerAdapter = ViewPagerAdapter(viewModel.getGreenPass(), requireActivity())
             binding.viewPager.adapter = pagerAdapter
-            binding.cardWelcome.isVisible  = false
-            binding.logoHome.isVisible  = false
+            binding.cardWelcome.isVisible = false
+            binding.logoHome.isVisible = false
         } else {
             binding.coordinator.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
-            binding.viewPager.isVisible  = false
-            binding.cardWelcome.isVisible  = true
-            binding.logoHome.isVisible  = true
+            binding.viewPager.isVisible = false
+            binding.cardWelcome.isVisible = true
+            binding.logoHome.isVisible = true
         }
     }
 
@@ -203,7 +254,7 @@ class HomeFragment : BaseFragment() {
             // Getting Page object by opening page.
             val page = renderer.openPage(i)
             // Creating empty bitmap. Bitmap.Config can be changed.
-            val bitmap = Bitmap.createBitmap(page.width*3, page.height*3, Bitmap.Config.ARGB_8888)
+            val bitmap = Bitmap.createBitmap(page.width * 3, page.height * 3, Bitmap.Config.ARGB_8888)
             // Creating Canvas from bitmap.
             val canvas = Canvas(bitmap)
             // Set White background color.
@@ -226,14 +277,61 @@ class HomeFragment : BaseFragment() {
                 out.flush()
                 out.close()
                 file.delete()
-                if(!text.isNullOrEmpty()) {
-                    return  text
+                if (!text.isNullOrEmpty()) {
+                    return text
                 }
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }
         }
         return ""
+    }
+
+    private var reviewInfo: ReviewInfo? = null
+    private lateinit var reviewManager: ReviewManager
+    fun showReviewWindow() {
+        try {
+            if (viewModel.getGreenPass().isEmpty()) return
+            val requestFlow = reviewManager.requestReviewFlow()
+            requestFlow.addOnCompleteListener { request ->
+                if (request.isSuccessful) {
+                    reviewInfo = request.result
+                    val flow = reviewManager.launchReviewFlow(requireActivity(), reviewInfo!!)
+                    flow.addOnSuccessListener {
+
+                    }
+                    flow.addOnFailureListener {
+
+                    }
+                    flow.addOnCompleteListener {
+
+                    }
+                } else {
+                    reviewInfo = null
+                }
+            }
+        } catch (ex: Exception) {
+        }
+    }
+
+    private fun setUpdatePlugin() {
+        AppUpdater(requireContext()).setDisplay(Display.DIALOG).setDuration(Duration.INDEFINITE).setUpdateFrom(UpdateFrom.GOOGLE_PLAY).apply { start() }
+    }
+
+    fun startReviewManager() {
+        reviewManager = ReviewManagerFactory.create(requireContext())
+
+        //Request a ReviewInfo object ahead of time (Pre-cache)
+        val requestFlow = reviewManager.requestReviewFlow()
+        requestFlow.addOnCompleteListener { request ->
+            if (request.isSuccessful) {
+                //Received ReviewInfo object
+                reviewInfo = request.result
+            } else {
+                //Problem in receiving object
+                reviewInfo = null
+            }
+        }
     }
 
 }

@@ -48,9 +48,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mock
 import java.io.ByteArrayInputStream
 import java.security.cert.Certificate
 import java.security.cert.CertificateFactory
@@ -161,7 +158,7 @@ class VerificationViewModelTest {
         }
         viewModel.inProgress.observeForever(mockObserver)
 
-        viewModel.decode(qrCode)
+        viewModel.decode(qrCode, true)
 
         assertNotEquals(viewModel.certificate.value, null)
         assertNotEquals(viewModel.verificationResult.value, null)

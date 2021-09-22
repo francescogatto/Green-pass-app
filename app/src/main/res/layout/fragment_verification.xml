@@ -226,6 +226,7 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/delete"
                             android:layout_marginTop="10dp"
+                            android:layout_marginBottom="40dp"
                             android:layout_gravity="end"
                             android:text="Elimina"
                             android:layout_width="wrap_content"

@@ -63,21 +63,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
 
-                <TextView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/privacyPolicy"
-                    style="@style/H3.Black"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16dp"
                     android:clickable="true"
-                    android:text="@string/privacyPolicy"
+                    android:text="Scannerrizza codice"
                     android:textAlignment="center"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/white"
                     android:textSize="15sp"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/systemDescription" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -134,13 +134,23 @@
             app:label_textColor="@color/blue" />
 
         <com.nambimobile.widgets.efab.FabOption
+            android:id="@+id/fabAddGreenPassSpid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_color="@color/white"
+            app:fab_icon="@drawable/ic_qr_code"
+            app:label_backgroundColor="@color/white"
+            app:label_text="Inserisci Green Pass da SPID"
+            app:label_textColor="@color/blue" />
+
+        <com.nambimobile.widgets.efab.FabOption
             android:id="@+id/fabAddGreenPassCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_color="@color/white"
             app:fab_icon="@drawable/ic_qr_code"
             app:label_backgroundColor="@color/white"
-            app:label_text="Inserisci Green Pass da fotocamera"
+            app:label_text="Inserisci Green Pass da FOTOCAMERA"
             app:label_textColor="@color/blue" />
 
         <com.nambimobile.widgets.efab.FabOption
@@ -151,7 +161,7 @@
             app:fab_color="@color/white"
             app:fab_icon="@drawable/ic_qr_code"
             app:label_backgroundColor="@color/white"
-            app:label_text="Inserisci Green Pass da immagine"
+            app:label_text="Inserisci Green Pass da IMMAGINE"
             app:label_textColor="@color/blue" />
 
         <com.nambimobile.widgets.efab.FabOption
@@ -163,6 +173,17 @@
             app:fab_icon="@drawable/ic_qr_code"
             app:label_backgroundColor="@color/white"
             app:label_text="Inserisci Green Pass da PDF"
+            app:label_textColor="@color/blue" />
+
+        <com.nambimobile.widgets.efab.FabOption
+            android:id="@+id/fabInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:fab_color="@color/white"
+            app:fab_icon="@drawable/ic_info"
+            app:label_backgroundColor="@color/white"
+            app:label_text="Informazioni app"
             app:label_textColor="@color/blue" />
 
 

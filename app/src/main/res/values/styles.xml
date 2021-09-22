@@ -92,4 +92,14 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="DialogFull" parent="AppTheme">
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+
 </resources>

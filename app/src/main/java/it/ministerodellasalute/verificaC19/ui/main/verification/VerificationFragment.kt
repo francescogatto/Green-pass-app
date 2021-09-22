@@ -102,7 +102,7 @@ class VerificationFragment : Fragment(), View.OnClickListener {
             binding.progressBar.isVisible = it
         }
 
-        viewModel.init(args.qrCodeText)
+        viewModel.init(args.qrCodeText,!requireArguments().getBoolean("showMoreDetails"))
     }
 
     private fun clearExtraTime(strDateTime: String): String {

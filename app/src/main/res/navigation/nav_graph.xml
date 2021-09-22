@@ -91,6 +91,9 @@
         <action
             android:id="@+id/action_homeFragment_to_fullScreenQrCode"
             app:destination="@id/fullScreenQrCode" />
+        <action
+            android:id="@+id/action_homeFragment_to_aboutMeFragment"
+            app:destination="@id/aboutMeFragment" />
     </fragment>
     <fragment
         tools:layout="@layout/activity_first"
@@ -110,5 +113,9 @@
             android:name="qrCodeText"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/aboutMeFragment"
+        android:name="it.ministerodellasalute.verificaC19.ui.custom.AboutMeFragment"
+        android:label="AboutMeFragment" />
 
 </navigation>
