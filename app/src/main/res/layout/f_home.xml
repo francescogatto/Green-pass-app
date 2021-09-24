@@ -131,6 +131,7 @@
             app:fab_icon="@drawable/ic_check_fab"
             app:label_backgroundColor="@color/white"
             app:label_text="Verifica Green Pass"
+            android:visibility="gone"
             app:label_textColor="@color/blue" />
 
         <com.nambimobile.widgets.efab.FabOption

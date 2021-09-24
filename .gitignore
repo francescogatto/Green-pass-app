@@ -29,3 +29,4 @@ local.properties
 .idea/jarRepositories.xml
 .idea/modules.xml
 .idea/kotlinScripting.xml
+app/google-services.json
