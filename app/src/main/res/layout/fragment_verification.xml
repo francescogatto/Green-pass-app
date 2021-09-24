@@ -1,21 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-   ~ license-start
-   ~
-   ~ Copyright (C) 2021 Ministero della Salute and all other contributors
-   ~
-   ~ Licensed under the Apache License, Version 2.0 (the "License");
-   ~ you may not use this file except in compliance with the License.
-   ~ You may obtain a copy of the License at
-   ~
-   ~     http://www.apache.org/licenses/LICENSE-2.0
-   ~
-   ~ Unless required by applicable law or agreed to in writing, software
-   ~ distributed under the License is distributed on an "AS IS" BASIS,
-   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   ~ See the License for the specific language governing permissions and
-   ~ limitations under the License.
--->
-
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -51,10 +34,10 @@
                     android:layout_height="@dimen/size_35dp"
                     android:background="@drawable/circular"
                     android:padding="@dimen/padding_10dp"
-                    tools:visibility="invisible"
                     android:src="@drawable/ic_close"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/checkmark"
@@ -63,11 +46,11 @@
                     android:layout_marginTop="@dimen/margin_20dp"
                     android:background="@android:color/transparent"
                     android:padding="@dimen/padding_10dp"
-                    tools:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/close_button"
-                    tools:background="@drawable/ic_checkmark_filled" />
+                    tools:background="@drawable/ic_checkmark_filled"
+                    tools:visibility="gone" />
 
                 <TextView
                     android:id="@+id/certificate_valid"
@@ -108,14 +91,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:scaleType="fitCenter" />
+
                     <TextView
-                        android:text="Clicca sul QRCode per ingrandirlo"
-                        android:gravity="center"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="8dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:text="Clicca sul QRCode per ingrandirlo"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/nameSurname"
@@ -123,7 +107,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="ewfwefewf"
                         android:textAllCaps="true"
                         android:textColor="@color/blue_dark"
                         android:textStyle="bold" />
@@ -151,7 +134,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="22/12/1989"
                             android:textColor="@color/blue_dark" />
 
                         <TextView
@@ -186,7 +168,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="22/12/1989"
                             android:textColor="@color/blue_dark" />
 
                         <TextView
@@ -225,12 +206,12 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="40dp"
-                            android:layout_gravity="end"
-                            android:text="Elimina"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:text="Elimina" />
 
                     </LinearLayout>
 

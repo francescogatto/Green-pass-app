@@ -34,4 +34,7 @@
 
     <color name="blue_light">#B7CCE6</color>
 
+    <color name="red_bg">#E5253C</color>
+    <color name="blue_bg">#0066CC</color>
+
 </resources>

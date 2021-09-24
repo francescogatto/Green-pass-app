@@ -17,20 +17,14 @@
  *  limitations under the License.
  *  ---license-end
  *
- *  Created by Mykhailo Nester on 4/23/21 9:49 AM
  */
 
-import org.gradle.api.JavaVersion
+package it.ministerodellasalute.verificaC19.model
 
-object Config {
-    const val minSdk = 21
-    const val compileSdk = 30
-    const val targetSdk = 30
-    val javaVersion = JavaVersion.VERSION_1_8
-
-    const val versionCode = 13
-    const val versionName = "1.0.1"
-
-    const val androidTestInstrumentation = "androidx.test.runner.AndroidJUnitRunner"
-    const val proguardConsumerRules = "consumer-rules.pro"
+enum class CertificateStatus {
+    NOT_VALID,
+    NOT_VALID_YET,
+    VALID,
+    PARTIALLY_VALID,
+    NOT_GREEN_PASS;
 }

@@ -65,4 +65,24 @@
     <string name="homeMessage">Con Green Pass App puoi aggiungere tutti i green pass che vuoi per portarli sempre con te.\nPer iniziare è semplice, basta inquadrare il QRCode.\nInfine puoi verificare se i tuoi Green Pass o quelli degli altri sono autentici\n\nPer iniziare premi il bottone rotondo in basso a destra</string>
     <string name="back_to_home">Torna alla home</string>
 
+    <string name="label_verify_green_pass">Verifica una\n<b>Certificazione\nverde Covid-19</b></string>
+    <string name="label_scan_qr_code">Scansiona il QR CODE</string>
+    <string name="label_read_faq"><u><b>Leggi le domande frequenti</b></u></string>
+    <string name="label_verification_location"><b><u>Quali sono i luoghi e gli eventi che la prevedono?</u></b></string>
+    <string name="label_name">Nome/Name</string>
+    <string name="label_close">Chiudi</string>
+    <string name="label_return_home">Torna all\'inizio</string>
+    <string name="certificatePartiallyValid">Certificazione valida solo in Italia</string>
+    <string name="label_what_can_be_done">Cosa si può fare con la certificazione verde COVID-19</string>
+    <string name="label_why_qr_not_valid">Quali sono i motivi di non validità?</string>
+    <string name="label_when_qr_valid">Quali sono i tempi di inizio validità?</string>
+    <string name="label_which_qr_scan">Quale QR Code scansionare?</string>
+    <string name="label_scan_error_meaning">Cosa significa errore di lettura?</string>
+    <string name="label_scan_times_needed">Quante volte devo riprovare a scansionare</string>
+    <string name="label_validation_timestamp">Ora e data di validazione: %1$s</string>
+
+    <string name="subtitle_text_notvalid">La certificazione presenta i seguenti dati anagrafici:</string>
+    <string name="certificateNonValidYet">Certificazione non ancora valida</string>
+    <string name="certificateNotDCC">Errore di lettura del QR Code, oppure non è il Certificato verde COVID-19</string>
+
 </resources>

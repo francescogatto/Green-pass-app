@@ -22,12 +22,16 @@
 
 package it.ministerodellasalute.verificaC19.model
 
+import java.lang.reflect.Constructor
+
 data class CertificateModel(
-    val person: PersonModel,
-    val dateOfBirth: String,
+    val person: PersonModel?,
+    val dateOfBirth: String?,
     val vaccinations: List<VaccinationModel>?,
     val tests: List<TestModel>?,
-    val recoveryStatements: List<RecoveryModel>?
+    val recoveryStatements: List<RecoveryModel>?,
+    val isValid: Boolean,
+    val isCborDecoded: Boolean
 )
 
 data class PersonModel(
@@ -70,6 +74,11 @@ data class TestModel(
 enum class TestResult(val value: String) {
     DETECTED("DETECTED"),
     NOT_DETECTED("NOT DETECTED")
+}
+
+enum class TestType(val value: String) {
+    RAPID("LP217198-3"),
+    MOLECULAR("LP6464-4")
 }
 
 data class RecoveryModel(

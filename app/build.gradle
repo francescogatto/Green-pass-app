@@ -159,9 +159,7 @@ dependencies {
 
     implementation Deps.kotlin_stdlib
     implementation Deps.androidx_core
-    implementation Deps.androidx_appcompat
     implementation Deps.androidx_material
-    implementation Deps.androidx_constraint
     implementation Deps.androidx_navigation_fragment
     implementation Deps.androidx_navigation_ui
     implementation Deps.androidx_room_runtime
