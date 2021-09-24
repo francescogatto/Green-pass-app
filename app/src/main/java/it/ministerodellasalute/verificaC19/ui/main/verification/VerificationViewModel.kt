@@ -247,6 +247,7 @@ class VerificationViewModel @Inject constructor(
                                 Integer.parseInt(getVaccineEndDayNotComplete(it.last().medicinalProduct))
                                     .toLong()
                             )
+                    it.last().expireDate = endDate.toString()
                     Log.d("dates", "start:$startDate end: $endDate")
                     return when {
                         startDate.isAfter(LocalDate.now()) -> CertificateStatus.NOT_VALID_YET
@@ -269,6 +270,7 @@ class VerificationViewModel @Inject constructor(
                                 Integer.parseInt(getVaccineEndDayComplete(it.last().medicinalProduct))
                                     .toLong()
                             )
+                    it.last().expireDate = endDate.toString()
                     Log.d("dates", "start:$startDate end: $endDate")
                     return when {
                         startDate.isAfter(LocalDate.now()) -> CertificateStatus.NOT_VALID_YET
@@ -304,12 +306,14 @@ class VerificationViewModel @Inject constructor(
                         .plusHours(Integer.parseInt(getMolecularTestStartHour()).toLong())
                     endDate = ldtDateTimeOfCollection
                         .plusHours(Integer.parseInt(getMolecularTestEndHour()).toLong())
+                    it.last().expireDate = endDate.toString()
                 }
                 TestType.RAPID.value -> {
                     startDate = ldtDateTimeOfCollection
                         .plusHours(Integer.parseInt(getRapidTestStartHour()).toLong())
                     endDate = ldtDateTimeOfCollection
                         .plusHours(Integer.parseInt(getRapidTestEndHour()).toLong())
+                    it.last().expireDate = endDate.toString()
                 }
                 else -> {
                     return CertificateStatus.NOT_VALID
@@ -337,6 +341,7 @@ class VerificationViewModel @Inject constructor(
                 LocalDate.parse(clearExtraTime(it.last().certificateValidUntil))
 
             Log.d("dates", "start:$startDate end: $endDate")
+            it.last().expireDate = endDate.toString()
             return when {
                 startDate.isAfter(LocalDate.now()) -> CertificateStatus.NOT_VALID_YET
                 LocalDate.now()

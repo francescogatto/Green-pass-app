@@ -92,12 +92,53 @@ class VerificationFragment : Fragment(), View.OnClickListener {
     private fun setupCertStatusView(cert: CertificateModel) {
         val certStatus = viewModel.getCertificateStatus(cert)
         setBackgroundColor(certStatus)
+        setExpiration(cert)
       //  setPersonDetailsVisibility(certStatus)
         setValidationIcon(certStatus)
         setValidationMainText(certStatus)
        // setValidationSubTextVisibility(certStatus)
        // setValidationSubText(certStatus)
         setLinkViews(certStatus)
+    }
+
+    private fun setExpiration(certificateModel: CertificateModel){
+        binding.vaccineLayout.isVisible = certificateModel.vaccinations != null
+        binding.nameSurname.text = certificateModel.person?.familyName.plus(" ").plus(certificateModel.person?.givenName)
+        binding.dateBirth.text = certificateModel.dateOfBirth?.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
+        certificateModel.vaccinations?.let { vaccinations ->
+            binding.vaccineType.text = MedicinalProduct.valueOf(vaccinations.last().medicinalProduct.replace("/", "")).code
+            binding.numberOFVaccines.text = vaccinations.last().totalSeriesOfDoses.toString()
+            binding.dateVaccination.text = vaccinations.last().dateOfVaccination.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
+            binding.expireDate.text = vaccinations.last().expireDate.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
+            binding.delete.setOnClickListener {
+                homeViewModel.deleteCertificate(args.qrCodeText)
+            }
+        }
+        certificateModel.tests?.let { vaccinations ->
+            binding.vaccineTypeTitle.isVisible = false
+            binding.vaccineType.isVisible = false
+            binding.numberOFVaccinesTitle.isVisible = false
+            binding.numberOFVaccines.isVisible = false
+            binding.dateVaccinationTitle.text = "Data risultato test"
+            binding.dateVaccination.text = vaccinations.last().dateTimeOfTestResult?.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
+            binding.expireDate.text = vaccinations.last().expireDate.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
+            binding.delete.setOnClickListener {
+                homeViewModel.deleteCertificate(args.qrCodeText)
+            }
+        }
+
+        certificateModel.recoveryStatements?.let { vaccinations ->
+            binding.vaccineTypeTitle.isVisible = false
+            binding.vaccineType.isVisible = false
+            binding.numberOFVaccinesTitle.isVisible = false
+            binding.numberOFVaccines.isVisible = false
+            binding.dateVaccinationTitle.text = "Data primo tampone positivo"
+            binding.dateVaccination.text = vaccinations.last().dateOfFirstPositiveTest?.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
+            binding.expireDate.text = vaccinations.last().expireDate.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
+            binding.delete.setOnClickListener {
+                homeViewModel.deleteCertificate(args.qrCodeText)
+            }
+        }
     }
 
     private fun setLinkViews(certStatus: CertificateStatus) {
@@ -180,18 +221,6 @@ class VerificationFragment : Fragment(), View.OnClickListener {
             //binding.testDebug.isVisible = true
             //binding.testDebug.text = certificateModel.toString()
           //  binding.certificateValid.isVisible = false
-            binding.vaccineLayout.isVisible = certificateModel.vaccinations != null
-            certificateModel.vaccinations?.let { vaccinations ->
-                binding.nameSurname.text = certificateModel.person?.familyName.plus(" ").plus(certificateModel.person?.givenName)
-                binding.vaccineType.text = MedicinalProduct.valueOf(vaccinations.last().medicinalProduct.replace("/", "")).code
-                binding.numberOFVaccines.text = vaccinations.last().totalSeriesOfDoses.toString()
-                binding.dateBirth.text = certificateModel.dateOfBirth?.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
-                binding.dateVaccination.text = vaccinations.last().dateOfVaccination.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
-                binding.expireDate.text = vaccinations.last().expireDate.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
-                binding.delete.setOnClickListener {
-                    homeViewModel.deleteCertificate(args.qrCodeText)
-                }
-            }
         }
 
         }
