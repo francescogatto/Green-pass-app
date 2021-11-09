@@ -126,9 +126,10 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+       /* binding.fabCheckGreenPass.isVisible = false
         binding.fabCheckGreenPass.setOnClickListener {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToVerificaC19Fragment())
-        }
+        }*/
         binding.fabAddGreenPassCamera.setOnClickListener {
             checkCameraPermission()
         }

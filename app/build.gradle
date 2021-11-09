@@ -95,8 +95,8 @@ android {
         applicationId "net.francescogatto.greenpassapp"
         minSdkVersion Config.minSdk
         targetSdkVersion Config.targetSdk
-        versionCode 20
-        versionName "1.4"
+        versionCode 22
+        versionName "2.1"
         testInstrumentationRunner Config.androidTestInstrumentation
     }
 

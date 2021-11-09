@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "149200162773",
+    "project_id": "green-pass-app",
+    "storage_bucket": "green-pass-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149200162773:android:72ce653edc0626ac60375c",
+        "android_client_info": {
+          "package_name": "net.francescogatto.greenpassapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149200162773-bmi12ofr3b3bov3mpedqu3kokefko07g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbJAVgz9baRp7LGlR2w5huZN5HdnqAPbI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149200162773-bmi12ofr3b3bov3mpedqu3kokefko07g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

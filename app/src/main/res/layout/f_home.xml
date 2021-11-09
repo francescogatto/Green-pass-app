@@ -123,16 +123,7 @@
             app:efab_orientation="portrait"
             app:efab_successiveFabOptionMarginPx="100" />
 
-        <com.nambimobile.widgets.efab.FabOption
-            android:id="@+id/fabCheckGreenPass"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_color="@color/white"
-            app:fab_icon="@drawable/ic_check_fab"
-            app:label_backgroundColor="@color/white"
-            app:label_text="Verifica Green Pass"
-            android:visibility="gone"
-            app:label_textColor="@color/blue" />
+
 
         <com.nambimobile.widgets.efab.FabOption
             android:id="@+id/fabAddGreenPassSpid"

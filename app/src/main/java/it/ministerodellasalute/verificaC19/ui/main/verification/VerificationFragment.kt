@@ -37,12 +37,10 @@ import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import dagger.hilt.android.AndroidEntryPoint
 import it.ministerodellasalute.verificaC19.*
-import it.ministerodellasalute.verificaC19.databinding.FragmentVerificationBinding
 import it.ministerodellasalute.verificaC19.databinding.FragmentVerificationNewBinding
 import it.ministerodellasalute.verificaC19.model.CertificateModel
 import it.ministerodellasalute.verificaC19.model.CertificateStatus
 import it.ministerodellasalute.verificaC19.model.PersonModel
-import it.ministerodellasalute.verificaC19.ui.compounds.QuestionCompound
 import it.ministerodellasalute.verificaC19.ui.custom.HomeFragmentDirections
 import it.ministerodellasalute.verificaC19.ui.custom.HomeViewModel
 import it.ministerodellasalute.verificaC19.ui.custom.MedicinalProduct
@@ -70,7 +68,7 @@ class VerificationFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       // binding.closeButton.setOnClickListener(this)
+        // binding.closeButton.setOnClickListener(this)
         binding.validationDate.text = getString(
             R.string.label_validation_timestamp, Date().time.parseTo(
                 FORMATTED_VALIDATION_DATE
@@ -93,16 +91,16 @@ class VerificationFragment : Fragment(), View.OnClickListener {
         val certStatus = viewModel.getCertificateStatus(cert)
         setBackgroundColor(certStatus)
         setExpiration(cert)
-      //  setPersonDetailsVisibility(certStatus)
+        //  setPersonDetailsVisibility(certStatus)
         setValidationIcon(certStatus)
         setValidationMainText(certStatus)
-       // setValidationSubTextVisibility(certStatus)
-       // setValidationSubText(certStatus)
-        setLinkViews(certStatus)
+        // setValidationSubTextVisibility(certStatus)
+        // setValidationSubText(certStatus)
+        //setLinkViews(certStatus)
     }
 
-    private fun setExpiration(certificateModel: CertificateModel){
-        binding.vaccineLayout.isVisible = certificateModel.vaccinations != null
+    private fun setExpiration(certificateModel: CertificateModel) {
+       // binding.vaccineLayout.isVisible = certificateModel.vaccinations != null
         binding.nameSurname.text = certificateModel.person?.familyName.plus(" ").plus(certificateModel.person?.givenName)
         binding.dateBirth.text = certificateModel.dateOfBirth?.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
         certificateModel.vaccinations?.let { vaccinations ->
@@ -117,10 +115,10 @@ class VerificationFragment : Fragment(), View.OnClickListener {
         certificateModel.tests?.let { vaccinations ->
             binding.vaccineTypeTitle.isVisible = false
             binding.vaccineType.isVisible = false
-            binding.numberOFVaccinesTitle.isVisible = false
-            binding.numberOFVaccines.isVisible = false
-            binding.dateVaccinationTitle.text = "Data risultato test"
-            binding.dateVaccination.text = vaccinations.last().dateTimeOfTestResult?.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
+            binding.numberOFVaccinesTitle.text = "Centro"
+            binding.numberOFVaccines.text = vaccinations.last().testingCentre
+            binding.dateVaccinationTitle.text = "Data del test"
+            binding.dateVaccination.text = vaccinations.last().dateTimeOfCollection?.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
             binding.expireDate.text = vaccinations.last().expireDate.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE)
             binding.delete.setOnClickListener {
                 homeViewModel.deleteCertificate(args.qrCodeText)
@@ -139,23 +137,6 @@ class VerificationFragment : Fragment(), View.OnClickListener {
                 homeViewModel.deleteCertificate(args.qrCodeText)
             }
         }
-    }
-
-    private fun setLinkViews(certStatus: CertificateStatus) {
-        val questionMap: Map<String, String> = when (certStatus) {
-            CertificateStatus.VALID, CertificateStatus.PARTIALLY_VALID -> mapOf(getString(R.string.label_what_can_be_done) to "https://www.dgc.gov.it/web/faq.html#verifica19")
-            CertificateStatus.NOT_VALID_YET -> mapOf(getString(R.string.label_when_qr_valid) to "https://www.dgc.gov.it/web/faq.html#verifica19")
-            CertificateStatus.NOT_VALID -> mapOf(getString(R.string.label_why_qr_not_valid) to "https://www.dgc.gov.it/web/faq.html#verifica19")
-            CertificateStatus.NOT_GREEN_PASS -> mapOf(getString(R.string.label_which_qr_scan) to "https://www.dgc.gov.it/web/faq.html#verifica19")
-        }
-    }
-
-    private fun setValidationSubTextVisibility(certStatus: CertificateStatus) {
-
-    }
-
-    private fun setValidationSubText(certStatus: CertificateStatus) {
-
     }
 
     private fun setValidationMainText(certStatus: CertificateStatus) {
@@ -181,12 +162,6 @@ class VerificationFragment : Fragment(), View.OnClickListener {
             )
     }
 
-    private fun setPersonDetailsVisibility(certStatus: CertificateStatus) {
-       /* binding.containerPersonDetails.visibility = when (certStatus) {
-            CertificateStatus.VALID, CertificateStatus.NOT_VALID, CertificateStatus.NOT_VALID_YET, CertificateStatus.PARTIALLY_VALID -> View.VISIBLE
-            else -> View.GONE
-        }*/
-    }
 
     private fun setBackgroundColor(certStatus: CertificateStatus) {
         binding.verificationBackground.setBackgroundColor(
@@ -202,28 +177,20 @@ class VerificationFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setPersonData(person: PersonModel?, dateOfBirth: String?) {
-     //   binding.nameStandardisedText.text = person?.familyName.plus(" ").plus(person?.givenName)
-      //  binding.birthdateText.text = dateOfBirth?.parseFromTo(YEAR_MONTH_DAY, FORMATTED_BIRTHDAY_DATE) ?: ""
-        if(args.saveGreenPass) {
+        if (!requireArguments().getBoolean("showMoreDetails")) {
+            findNavController().navigate(VerificationFragmentDirections.actionVerificationFragmentToHomeFragment())
+        }
+        if (args.saveGreenPass) {
             viewModel.persistGreenPass(args.qrCodeText)
         }
-        if(requireArguments().getBoolean("showMoreDetails")) {
-            val barcodeEncoder = BarcodeEncoder()
-            val bitmap = barcodeEncoder.encodeBitmap(args.qrCodeText, BarcodeFormat.QR_CODE, 300, 300)
-            binding.containerCustomPersonDetails.isVisible = true
-            binding.qrcodeImage.setImageBitmap(bitmap)
-            binding.qrcodeImage.setOnClickListener {
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFullScreenQrCode(args.qrCodeText))
-            }
-           // binding.checkmark.isInvisible = true
-           // binding.closeButton.isVisible = false
-          //  binding.subtitleText.isVisible = false
-            //binding.testDebug.isVisible = true
-            //binding.testDebug.text = certificateModel.toString()
-          //  binding.certificateValid.isVisible = false
+        val barcodeEncoder = BarcodeEncoder()
+        val bitmap = barcodeEncoder.encodeBitmap(args.qrCodeText, BarcodeFormat.QR_CODE, 300, 300)
+        binding.qrcodeImage.setImageBitmap(bitmap)
+        binding.qrcodeImage.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFullScreenQrCode(args.qrCodeText))
         }
 
-        }
+    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -235,6 +202,7 @@ class VerificationFragment : Fragment(), View.OnClickListener {
         super.onDestroyView()
         _binding = null
     }
+
     companion object {
         fun newInstance(qrcodeText: String): VerificationFragment {
             return VerificationFragment().apply {
